@@ -30,16 +30,16 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
   final picker = ImagePicker();
 
   Future _uploadImageToServer(String uid, File image) async {
-    try{
-    StorageReference firebaseStorageRef =
-        await FirebaseStorage.instance.ref().child('profile/$uid');
-    StorageUploadTask uploadTask = await firebaseStorageRef.putFile(image);
-    await uploadTask.onComplete;
+    try {
+      StorageReference firebaseStorageRef =
+          await FirebaseStorage.instance.ref().child('profile/$uid');
+      StorageUploadTask uploadTask = await firebaseStorageRef.putFile(image);
+      await uploadTask.onComplete;
 
-    downloadURL = await firebaseStorageRef.getDownloadURL();}
-    catch(e){
+      downloadURL = await firebaseStorageRef.getDownloadURL();
+    } catch (e) {
       downloadURL =
-      'https://lh3.googleusercontent.com/proxy/bA0X6z7Gp9ljI1ylHuU_BQucxbxBcV8TcS5NSIrLnmyAfA7eNHREikUQ17Ljgw8zIEDTstQP4jwvnx3Q7wDWVO8GGi1NmIXPpUrdbXaM8uJDUQafqakV0R0jvbqgMvtAY_23m4xK-XylVl2i46Qje0ov5scJr5HezZHhU5kipw';
+          'https://firebasestorage.googleapis.com/v0/b/fir-91cdf.appspot.com/o/profile%2FGroup%20181.png?alt=media&token=cd21a44e-d09e-42cd-a3ed-206634b10691';
     }
   }
 
@@ -58,22 +58,19 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
     final FirebaseUser newUser = (await _auth.createUserWithEmailAndPassword(
       email: email,
       password: password,
-    )).user;
+    ))
+        .user;
 
     if (newUser != null) {
-
       await _uploadImageToServer(newUser.email, _image);
-
     }
 
-    await Firestore.instance
-        .collection('profile').
-    add({
+    await Firestore.instance.collection('profile').add({
       'email': email,
       'name': name,
       'phone': phone,
       'lastTest': Timestamp.now(),
-      'profile':downloadURL,
+      'profile': downloadURL,
     });
   }
 
@@ -97,7 +94,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                 onPressed: () => Navigator.of(context).pop(),
               ),
               backgroundColor:
-              Colors.white.withOpacity(0), //You can make this transparent
+                  Colors.white.withOpacity(0), //You can make this transparent
               elevation: 0.0, //No shadow
             ),
           ),
@@ -119,7 +116,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
           ModalProgressHUD(
             inAsyncCall: showSpinner,
             child: Padding(
-              padding: EdgeInsets.fromLTRB(24, 200,24,0),
+              padding: EdgeInsets.fromLTRB(24, 200, 24, 0),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -144,14 +141,14 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: <Widget>[
                               OutlineButton(
-                                highlightedBorderColor:Colors.black54,
+                                highlightedBorderColor: Colors.black54,
                                 child: Text('갤러리'),
                                 onPressed: () {
                                   _uploadImageToStorage(ImageSource.gallery);
                                 },
                               ),
                               OutlineButton(
-                                highlightedBorderColor:Colors.black54,
+                                highlightedBorderColor: Colors.black54,
                                 child: Text('카메라'),
                                 onPressed: () {
                                   _uploadImageToStorage(ImageSource.camera);
@@ -168,7 +165,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                       email = value;
                     },
                     decoration:
-                    kTextFieldDecoration.copyWith(hintText: '이메일을 입력해주세요.'),
+                        kTextFieldDecoration.copyWith(hintText: '이메일을 입력해주세요.'),
                   ),
                   SizedBox(
                     height: 8.0,
@@ -192,7 +189,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                       name = value;
                     },
                     decoration:
-                    kTextFieldDecoration.copyWith(hintText: '이름을 입력해주세요.'),
+                        kTextFieldDecoration.copyWith(hintText: '이름을 입력해주세요.'),
                   ),
                   SizedBox(
                     height: 8.0,
@@ -203,8 +200,8 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                     onChanged: (value) {
                       phone = value;
                     },
-                    decoration:
-                    kTextFieldDecoration.copyWith(hintText: '핸드폰 번호를 입력해주세요.'),
+                    decoration: kTextFieldDecoration.copyWith(
+                        hintText: '핸드폰 번호를 입력해주세요.'),
                   ),
                   Flexible(
                     child: SizedBox(
@@ -222,7 +219,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                       try {
                         _register();
                         setState(() {
-                        showSpinner = false;
+                          showSpinner = false;
                         });
                         await Navigator.pushNamed(context, WelcomeScreen.id);
                       } catch (e) {
