@@ -22,11 +22,11 @@ dependencies:
   cupertino_icons: ^0.1.2
   agora_rtc_engine: ^1.0.5
   permission_handler: ^5.0.1+1
-
   animated_text_kit: ^2.2.0
   firebase_core: ^0.4.5
   firebase_auth: ^0.16.1
   firebase_auth_web:
+  webview_flutter:
 
   firebase_storage: ^3.1.6
   cloud_firestore: ^0.13.2

@@ -28,6 +28,13 @@
 	<string>The app tries to use your microphone</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>사진첩 접근</string>
+    <key>NSAppTransportSecurity</key>
+    <dict>
+      <key>NSAllowsArbitraryLoads</key>
+      <true/>
+      <key>NSAllowsArbitraryLoadsInWebContent</key>
+      <true/>
+    </dict>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIMainStoryboardFile</key>

@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 import 'package:Seemly/src/components/PickerData.dart';
 import 'package:Seemly/src/pages/chat_screen.dart';
@@ -14,12 +15,15 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/widgets.dart';
 import 'dart:ui';
 import 'package:flutter_picker/flutter_picker.dart';
+import 'package:webview_flutter/webview_flutter.dart';
 
 import 'index.dart';
 
 final _firestore = Firestore.instance;
 final _auth = FirebaseAuth.instance;
 String downloadURL;
+String uid;
+String web_url;
 
 // TabController 객체를 멤버로 만들어서 상태를 유지하기 때문에 StatefulWidget 클래스 사용
 class ProfileScreen extends StatefulWidget {
@@ -37,8 +41,11 @@ MyTabsState ppState = MyTabsState();
 class MyTabsState extends State<ProfileScreen>
     with SingleTickerProviderStateMixin {
   // 컨트롤러는 TabBar와 TabBarView 객체를 생성할 때 직접 전달
+  final Completer<WebViewController> _controller =
+      Completer<WebViewController>();
   TabController controller;
   bool _hasCard = false;
+  bool _hasWeb = false;
   bool _hasShop = false;
   bool _doTest = false;
 
@@ -48,18 +55,30 @@ class MyTabsState extends State<ProfileScreen>
   String data1;
   String value2;
   String data2;
+  String url;
+  var webList = [
+    'https://www.16personalities.com/free-personality-test',
+    'https://evecondoms.com/sex_mind_test/'
+  ];
 
   void getProfile(String user) async {
     try {
+      await Firestore.instance.collection('profile').getDocuments().then((ds) {
+        ds.documents.forEach((element) {
+          if (element.data['email'] == user)
+            downloadURL = element.data['profile'];
+        });
+      });
+
+      /*   fb.StorageReference firebaseStorageRef =
+      await fb.storage().ref().child('profile/$user');
+      final url = await firebaseStorageRef.getDownloadURL();
       var storageReference =
           await FirebaseStorage.instance.ref().child('profile/$user');
-      final url = await storageReference.getDownloadURL();
-      if (url != null) {
-        downloadURL = url;
-      } else {
-        downloadURL =
-            'https://firebasestorage.googleapis.com/v0/b/fir-91cdf.appspot.com/o/profile%2FGroup%20181.png?alt=media&token=cd21a44e-d09e-42cd-a3ed-206634b10691';
-      }
+      final url = await storageReference.getDownloadURL();*/
+
+      downloadURL ??=
+          'https://firebasestorage.googleapis.com/v0/b/fir-91cdf.appspot.com/o/profile%2FGroup%20181.png?alt=media&token=cd21a44e-d09e-42cd-a3ed-206634b10691';
     } catch (e) {
       print(e);
       downloadURL =
@@ -71,7 +90,7 @@ class MyTabsState extends State<ProfileScreen>
     Picker(
         adapter: PickerDataAdapter<String>(pickerdata: data),
         hideHeader: true,
-        title: Text("Select Data"),
+        title: Text("추가할 심리테스트"),
         selectedTextStyle: TextStyle(color: Colors.blue),
         onConfirm: (Picker picker, List value) {
           data1 = (value[0].toString());
@@ -79,6 +98,7 @@ class MyTabsState extends State<ProfileScreen>
           var temp = picker.getSelectedValues();
           value1 = temp[0].toString();
           print(value1);
+          web_url = webList[value[0]];
           ppState._hideCard();
           ppState._showCard();
         }).showDialog(context);
@@ -107,7 +127,7 @@ class MyTabsState extends State<ProfileScreen>
       if (user != null) {
         loggedInUser = user;
         crn = loggedInUser.email;
-        getProfile(loggedInUser.email);
+        getProfile(crn);
       }
     } catch (e) {
       print(e);
@@ -142,6 +162,7 @@ class MyTabsState extends State<ProfileScreen>
     children.add(_buildBackground());
     if (_hasCard) children.add(_buildCard());
     if (_hasShop) children.add(_buildShop());
+    if (_hasWeb) children.add(_buildWeb());
     return MaterialApp(
       home: Stack(
         children: children,
@@ -222,7 +243,7 @@ class MyTabsState extends State<ProfileScreen>
             body: TabBarView(controller: controller, // 컨트롤러 연결
                 children: [Red(), Green(), Blue(), Container()]),
           ),
-          (_hasCard || _hasShop
+          (_hasCard || _hasShop || _hasWeb
               ? Positioned.fill(
                   child: BackdropFilter(
                     filter: ImageFilter.blur(sigmaX: 4, sigmaY: 6),
@@ -247,6 +268,14 @@ class MyTabsState extends State<ProfileScreen>
 
   void _hideShop() {
     setState(() => _hasShop = false);
+  }
+
+  void _showWeb() {
+    setState(() => _hasWeb = true);
+  }
+
+  void _hideWeb() {
+    setState(() => _hasWeb = false);
   }
 
   void doTest() {
@@ -282,6 +311,7 @@ class MyTabsState extends State<ProfileScreen>
               data = element;
             }
           });
+          print("데이터는");
           print(data);
           var name = data['name'];
           var lastTest = data['lastTest'];
@@ -336,16 +366,21 @@ class MyTabsState extends State<ProfileScreen>
                     ? Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: <Widget>[
-                          Container(
-                            padding: EdgeInsets.fromLTRB(30, 5, 0, 0),
-                            child: Text(
-                              ppState.value1,
-                              style: TextStyle(
-                                  fontSize: 20,
-                                  fontFamily: 'Apple SD Gothic Neo',
-                                  fontWeight: FontWeight.bold,
-                                  color: Color.fromRGBO(62, 52, 52, 0.5),
-                                  letterSpacing: 0),
+                          GestureDetector(
+                            onTap: () {
+                              _showWeb();
+                            },
+                            child: Container(
+                              padding: EdgeInsets.fromLTRB(30, 5, 0, 0),
+                              child: Text(
+                                ppState.value1,
+                                style: TextStyle(
+                                    fontSize: 20,
+                                    fontFamily: 'Apple SD Gothic Neo',
+                                    fontWeight: FontWeight.bold,
+                                    color: Color.fromRGBO(62, 52, 52, 0.5),
+                                    letterSpacing: 0),
+                              ),
                             ),
                           ),
                           Padding(
@@ -364,8 +399,8 @@ class MyTabsState extends State<ProfileScreen>
                                     letterSpacing: 0),
                               ),
                               onPressed: () {
-                                ppState.showPickerSpinner(context,
-                                    ['내 MBTI는?', '나와 어울리는 SEX 타입?', 'TEST']);
+                                ppState.showPickerSpinner(
+                                    context, ['내 MBTI는?', '나와 어울리는 SEX 타입?']);
                               },
                             ),
                           ),
@@ -387,8 +422,8 @@ class MyTabsState extends State<ProfileScreen>
                                 letterSpacing: 0),
                           ),
                           onPressed: () {
-                            ppState.showPickerSpinner(context,
-                                ['내 MBTI는?', '나와 어울리는 SEX 타입?', 'TEST']);
+                            ppState.showPickerSpinner(
+                                context, ['내 MBTI는?', '나와 어울리는 SEX 타입?']);
                           },
                         ),
                       )),
@@ -442,13 +477,41 @@ class MyTabsState extends State<ProfileScreen>
                               ),
                               onPressed: () {
                                 (int.parse(data1.toString()) == 0
-                                    ? ppState.showResultPicker(context,
-                                        ['ISTJ', 'INFP', 'ENTJ', 'ESFP'])
+                                    ? ppState.showResultPicker(context, [
+                                        'INTJ',
+                                        'INFJ',
+                                        'ISTJ',
+                                        'ISTP',
+                                        'INTP',
+                                        'INFP',
+                                        'ESFJ',
+                                        'ESFP',
+                                        'ENTJ',
+                                        'ENFJ',
+                                        'ESTJ',
+                                        'ESTP',
+                                        'ENTP',
+                                        'ENFP',
+                                        'ESFJ',
+                                        'ESFP'
+                                      ])
                                     : ppState.showResultPicker(context, [
                                         '섹스계의 흥선대원군',
+                                        '헌신적인 섹스매니저',
                                         '철벽의 섹크라테스',
+                                        '오르가즘 건축학도',
+                                        '관능적인 섹자이너',
+                                        '침대위의 性인군자',
+                                        '꿈꾸는 섹스칼럼리스트',
                                         '박학다식 사피오섹슈얼',
-                                        '정력뿜뿜 섹스탐험가'
+                                        '정력뿜뿜 섹스탐험가',
+                                        '찐팔섹조 섹퍼스타',
+                                        '호기심만렙 섹스실험가',
+                                        '정욕의 섹시오패스',
+                                        '오르가즘 마에스트로',
+                                        '허니스위트 섹블리',
+                                        '섹스계의 레지스탕스',
+                                        '무소불위 섹통령'
                                       ]));
                               },
                             ),
@@ -472,13 +535,41 @@ class MyTabsState extends State<ProfileScreen>
                           ),
                           onPressed: () {
                             (int.parse(data1.toString()) == 0
-                                ? ppState.showResultPicker(
-                                    context, ['ISTJ', 'INFP', 'ENTJ', 'ESFP'])
+                                ? ppState.showResultPicker(context, [
+                                    'INTJ',
+                                    'INFJ',
+                                    'ISTJ',
+                                    'ISTP',
+                                    'INTP',
+                                    'INFP',
+                                    'ESFJ',
+                                    'ESFP',
+                                    'ENTJ',
+                                    'ENFJ',
+                                    'ESTJ',
+                                    'ESTP',
+                                    'ENTP',
+                                    'ENFP',
+                                    'ESFJ',
+                                    'ESFP'
+                                  ])
                                 : ppState.showResultPicker(context, [
                                     '섹스계의 흥선대원군',
+                                    '헌신적인 섹스매니저',
                                     '철벽의 섹크라테스',
+                                    '오르가즘 건축학도',
+                                    '관능적인 섹자이너',
+                                    '침대위의 性인군자',
+                                    '꿈꾸는 섹스칼럼리스트',
                                     '박학다식 사피오섹슈얼',
-                                    '정력뿜뿜 섹스탐험가'
+                                    '정력뿜뿜 섹스탐험가',
+                                    '찐팔섹조 섹퍼스타',
+                                    '호기심만렙 섹스실험가',
+                                    '정욕의 섹시오패스',
+                                    '오르가즘 마에스트로',
+                                    '허니스위트 섹블리',
+                                    '섹스계의 레지스탕스',
+                                    '무소불위 섹통령'
                                   ]));
                           },
                         ),
@@ -521,6 +612,51 @@ class MyTabsState extends State<ProfileScreen>
           );
         }
       });
+
+  Widget _buildWeb() => Center(
+      child: Container(
+              margin: EdgeInsets.fromLTRB(20,20,20,20),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(30),
+                  topRight: Radius.circular(30),
+                  bottomLeft: Radius.circular(30),
+                  bottomRight: Radius.circular(30),
+                ),
+                color: Color.fromRGBO(255, 255, 255, 1),
+              ),
+              child: Column(
+                children: [
+                  Container(
+                    alignment: Alignment.centerRight,
+                    padding: EdgeInsets.all(10),
+                    child: ClipOval(
+                      child: Material(
+                        color: Colors.white10, // button color
+                        child: InkWell(
+                          splashColor: Colors.red, // inkwell color
+                          child: SizedBox(
+                              width: 56, height: 56, child: Icon(Icons.backspace)),
+                          onTap: () {
+                            _hideWeb();
+                          },
+                        ),
+                      ),
+                    ),
+                  ),
+                  Container(
+                        height:450,
+                        color: Colors.blue,
+                        child: WebView(
+                          key: UniqueKey(),
+                          initialUrl: web_url,
+                          javascriptMode: JavascriptMode.unrestricted,
+                        )),
+                ],
+              )
+              ),
+      );
+
   Widget _buildShop() => Center(
         child: Container(
             width: 339,
@@ -709,15 +845,17 @@ class RedState extends State<Red> {
 
   void getProfile(String user) async {
     try {
-      var storageReference =
-          await FirebaseStorage.instance.ref().child('profile/$user');
-      final url = await storageReference.getDownloadURL();
-      if (url != null) {
-        downloadURL = url;
-      } else {
-        downloadURL =
-            'https://firebasestorage.googleapis.com/v0/b/fir-91cdf.appspot.com/o/profile%2FGroup%20181.png?alt=media&token=cd21a44e-d09e-42cd-a3ed-206634b10691';
-      }
+      /*
+      print("rwa");
+      fb.StorageReference storageRef = fb.storage().ref('profile').child("profile");;
+
+      Uri imageUri = await storageRef.getDownloadURL();
+*/
+
+      Uri imageUri;
+      print(imageUri);
+      print(imageUri.toString());
+      downloadURL = imageUri.toString();
     } catch (e) {
       print(e);
       downloadURL =
@@ -1351,6 +1489,7 @@ class Blue extends StatelessWidget {
         color: Colors.white,
       ),
       child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
           Container(
             padding: EdgeInsets.symmetric(vertical: 30, horizontal: 30),

@@ -1,6 +1,7 @@
 import 'package:Seemly/src/pages/index.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:webview_flutter/webview_flutter.dart';
 import 'login_screen.dart';
 import 'registration_screen.dart';
 import 'package:Seemly/src/pages/chat_screen.dart';

@@ -34,12 +34,14 @@ class _ChatScreenState extends State<ChatScreen> {
 
   void getProfile(String user) async {
     try {
-      var storageReference =
-          FirebaseStorage.instance.ref().child('profile/$user');
-      final url = await storageReference.getDownloadURL();
-      if (url != null) {
-        downloadURL = url;
-      }
+
+      await Firestore.instance
+          .collection('profile')
+          .getDocuments()
+          .then((ds) {
+        ds.documents.forEach((element) {if(element.data['email']==user)downloadURL=element.data['profile'];});});
+
+      downloadURL ??= 'https://firebasestorage.googleapis.com/v0/b/fir-91cdf.appspot.com/o/profile%2FGroup%20181.png?alt=media&token=cd21a44e-d09e-42cd-a3ed-206634b10691';
     } catch (e) {
       print(e);
       Navigator.pushNamed(context, WelcomeScreen.id);

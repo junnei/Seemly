@@ -10,7 +10,11 @@ import 'package:modal_progress_hud/modal_progress_hud.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase/firebase.dart' as fb;
+
+final _firestore = Firestore.instance;
+final _auth = FirebaseAuth.instance;
+String downloadURL;
+File _image;
 
 class RegistrationScreen extends StatefulWidget {
   static const String id = 'registration_screen';
@@ -19,28 +23,30 @@ class RegistrationScreen extends StatefulWidget {
 }
 
 class _RegistrationScreenState extends State<RegistrationScreen> {
-  final _auth = FirebaseAuth.instance;
-  final _firebase = Firestore.instance;
   bool showSpinner = false;
   String email;
   String password;
   String name;
   String phone;
-  String downloadURL;
-  File _image;
   final picker = ImagePicker();
 
-  Future _uploadImageToServer(String uid, File image) async {
+  Future _uploadImageToServer(String user, File image) async {
     try {
-      fb.StorageReference firebaseStorageRef =
-          await fb.storage().ref().child('profile/$uid');
-      fb.UploadTaskSnapshot uploadTask =
-          await firebaseStorageRef.put(image).future;
-      Uri url = await firebaseStorageRef.getDownloadURL();
+
+      StorageReference firebaseStorage = await FirebaseStorage.instance.ref().child('profile').child(user);
+      StorageUploadTask uploadTask = await firebaseStorage.putFile(image);
+      downloadURL = await (await uploadTask.onComplete).ref.getDownloadURL();
+
+      /*
+      fb.StorageReference storageRef = fb.storage().ref('images/$uid');
+      fb.UploadTaskSnapshot uploadTaskSnapshot = await storageRef.put(image).future;
+
+      Uri url = await uploadTaskSnapshot.ref.getDownloadURL();
 
       setState(() {
         downloadURL = url.toString();
       });
+*/
     } catch (e) {
       setState(() {
         downloadURL =
@@ -72,36 +78,21 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
         setState(() {
           _image = File(
               'https://firebasestorage.googleapis.com/v0/b/fir-91cdf.appspot.com/o/profile%2FGroup%20181.png?alt=media&token=cd21a44e-d09e-42cd-a3ed-206634b10691');
+          downloadURL = _image.path;
         });
+
       }
-      await _uploadImageToServer(newUser.email, _image);
-
-      /*
-        await _firebase.collection('profile').add({
-          'email': email,
-          'name': name,
-          'phone': phone,
-          'lastTest': Timestamp.now(),
-          'profile': _image.path,
-        });
-      } else {
-        await _uploadImageToServer(newUser.email, _image);
-        await _firebase.collection('profile').add({
-          'email': email,
-          'name': name,
-          'phone': phone,
-          'lastTest': Timestamp.now(),
-          'profile': downloadURL,
-        });
-      }*/
-
-      await _firebase.collection('profile').add({
+      print(_image);
+      print(await _uploadImageToServer(newUser.email, _image));
+      await _firestore
+          .collection('profile').add({
         'email': email,
         'name': name,
         'phone': phone,
         'lastTest': Timestamp.now(),
         'profile': downloadURL,
       });
+
     }
   }
 
