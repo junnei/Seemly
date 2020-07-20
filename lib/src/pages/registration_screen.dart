@@ -10,6 +10,7 @@ import 'package:modal_progress_hud/modal_progress_hud.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase/firebase.dart' as fb;
 
 class RegistrationScreen extends StatefulWidget {
   static const String id = 'registration_screen';
@@ -19,6 +20,7 @@ class RegistrationScreen extends StatefulWidget {
 
 class _RegistrationScreenState extends State<RegistrationScreen> {
   final _auth = FirebaseAuth.instance;
+  final _firebase = Firestore.instance;
   bool showSpinner = false;
   String email;
   String password;
@@ -30,11 +32,12 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
 
   Future _uploadImageToServer(String uid, File image) async {
     try {
-      StorageReference firebaseStorageRef =
-          await FirebaseStorage.instance.ref().child('profile/$uid');
-      StorageUploadTask uploadTask = await firebaseStorageRef.putFile(image);
-      await uploadTask.onComplete;
-      downloadURL = await firebaseStorageRef.getDownloadURL();
+      fb.StorageReference firebaseStorageRef =
+          await fb.storage().ref().child('profile/$uid');
+      fb.UploadTaskSnapshot uploadTask =
+          await firebaseStorageRef.put(image).future;
+
+      downloadURL = await firebaseStorageRef.getDownloadURL().toString();
     } catch (e) {
       downloadURL =
           'https://firebasestorage.googleapis.com/v0/b/fir-91cdf.appspot.com/o/profile%2FGroup%20181.png?alt=media&token=cd21a44e-d09e-42cd-a3ed-206634b10691';
