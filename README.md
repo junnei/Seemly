@@ -43,7 +43,6 @@ iOS / Android / Web 지원.
 <div style="float: left; width: 400">
 <img width="300" src="https://user-images.githubusercontent.com/41983244/87882849-0510ed80-ca3e-11ea-8305-a61dc4577e94.png">
  </div>
- <div width ="100"/>
 <div style="float: left; width: 400">
 <img width="300" src="https://user-images.githubusercontent.com/41983244/87882935-ba43a580-ca3e-11ea-888c-4ecf65724655.png"> </div>
 </div>
