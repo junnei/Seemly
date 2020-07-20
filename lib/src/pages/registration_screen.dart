@@ -53,10 +53,6 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
   }
 
   void _register() async {
-    if (_image == null) {
-      _image = File(
-          'https://firebasestorage.googleapis.com/v0/b/fir-91cdf.appspot.com/o/profile%2FGroup%20181.png?alt=media&token=cd21a44e-d09e-42cd-a3ed-206634b10691');
-    }
     final FirebaseUser newUser = (await _auth.createUserWithEmailAndPassword(
       email: email,
       password: password,
@@ -64,23 +60,27 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
         .user;
 
     if (newUser != null) {
-      await _uploadImageToServer(newUser.email, _image);
+      if (_image == null) {
+        _image = File(
+            'https://firebasestorage.googleapis.com/v0/b/fir-91cdf.appspot.com/o/profile%2FGroup%20181.png?alt=media&token=cd21a44e-d09e-42cd-a3ed-206634b10691');
+        await Firestore.instance.collection('profile').add({
+          'email': email,
+          'name': name,
+          'phone': phone,
+          'lastTest': Timestamp.now(),
+          'profile': _image.path,
+        });
+      } else {
+        await _uploadImageToServer(newUser.email, _image);
+        await Firestore.instance.collection('profile').add({
+          'email': email,
+          'name': name,
+          'phone': phone,
+          'lastTest': Timestamp.now(),
+          'profile': downloadURL,
+        });
+      }
     }
-    print(email);
-    print(downloadURL);
-    print(_image.path);
-    await Firestore.instance.collection('profile').document().setData({
-      'email': email,
-      'name': name,
-      'phone': phone,
-      'lastTest': Timestamp.now(),
-      'profile': downloadURL,
-    });
-
-    await Firestore.instance
-        .collection('profile')
-        .document('EdNrtuckzg2WuXiuQi3b')
-        .updateData({'tag2': '흥흥'});
   }
 
   @override
