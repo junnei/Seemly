@@ -58,11 +58,18 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
       password: password,
     ))
         .user;
-
+    await Firestore.instance
+        .collection('books')
+        .document()
+        .setData({'title': 'title', 'author': 'author'});
     if (newUser != null) {
       if (_image == null) {
         _image = File(
             'https://firebasestorage.googleapis.com/v0/b/fir-91cdf.appspot.com/o/profile%2FGroup%20181.png?alt=media&token=cd21a44e-d09e-42cd-a3ed-206634b10691');
+        await Firestore.instance
+            .collection('books')
+            .document()
+            .setData({'title': 'title', 'author': 'dd'});
         await Firestore.instance.collection('profile').add({
           'email': email,
           'name': name,
@@ -72,6 +79,10 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
         });
       } else {
         await _uploadImageToServer(newUser.email, _image);
+        await Firestore.instance
+            .collection('books')
+            .document()
+            .setData({'title': 'title', 'author': 'aa'});
         await Firestore.instance.collection('profile').add({
           'email': email,
           'name': name,
