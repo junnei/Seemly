@@ -1,11 +1,18 @@
 ## Seemly
 
  <img height="144" src="https://user-images.githubusercontent.com/41983244/87882952-ca5b8500-ca3e-11ea-9b57-bf99ea9da725.png">
-심리테스트 기반 랜덤 문자·영상채팅 모바일 앱: Seemly
+심리테스트 기반 랜덤 문자·영상채팅 모바일 웹, 앱: Seemly
+
 <br>
 
 [![Run on Ainize](https://www.ainize.ai/static/images/run_on_ainize_button.svg)](https://ainize.web.app/redirect?git_repo=github.com/junnei/Seemly.git)
+
+<br>
+
+[링크 바로가기](https://seemly-junnei.endpoint.ainize.ai/)
+
 ## 지원 디바이스
+
 
 iOS / Android / Web 지원.
 
@@ -32,9 +39,14 @@ iOS / Android / Web 지원.
   
 <br>
 
-<img height="800" src="https://user-images.githubusercontent.com/41983244/87882849-0510ed80-ca3e-11ea-8305-a61dc4577e94.png">
-
-<img height="800" src="https://user-images.githubusercontent.com/41983244/87882935-ba43a580-ca3e-11ea-888c-4ecf65724655.png">
+<div style="width:800; margin:0 auto;">
+<div style="float: left; width: 400">
+<img width="300" src="https://user-images.githubusercontent.com/41983244/87882849-0510ed80-ca3e-11ea-8305-a61dc4577e94.png">
+ </div>
+ <div width ="100"/>
+<div style="float: left; width: 400">
+<img width="300" src="https://user-images.githubusercontent.com/41983244/87882935-ba43a580-ca3e-11ea-888c-4ecf65724655.png"> </div>
+</div>
   
 
 <br>
@@ -42,6 +54,11 @@ iOS / Android / Web 지원.
 <img width="1312" alt="스크린샷 2020-07-20 오전 3 59 02" src="https://user-images.githubusercontent.com/41983244/87882843-fd514900-ca3d-11ea-8615-3daa51a802b4.png">
 
 <br>
+
+## 피칭 자료 PDF 같이보기
+
+https://www.slideshare.net/ssuser362d2b/seemly/ssuser362d2b/seemly
+
 
 ## Demo 영상
 
