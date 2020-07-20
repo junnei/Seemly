@@ -11,6 +11,16 @@
 
 [링크 바로가기](https://seemly-junnei.endpoint.ainize.ai/)
 
+## Introduction for our product
+
+![Seemly-01](https://user-images.githubusercontent.com/41983244/87917774-6d001c00-cab0-11ea-86c5-2cae32c86345.png)
+![Seemly-04](https://user-images.githubusercontent.com/41983244/87917780-6f627600-cab0-11ea-9ee1-fe3b335f2ca1.png)
+![Seemly-05](https://user-images.githubusercontent.com/41983244/87917823-830ddc80-cab0-11ea-8da4-088e2c5dcfff.png)
+![Seemly-06](https://user-images.githubusercontent.com/41983244/87917827-843f0980-cab0-11ea-9595-741c8e2246e2.png)
+![Seemly-07](https://user-images.githubusercontent.com/41983244/87917834-85703680-cab0-11ea-8048-2d7e962316b8.png)
+![Seemly-09](https://user-images.githubusercontent.com/41983244/87917841-886b2700-cab0-11ea-81cf-a73f5337d98b.png)
+![Seemly-10](https://user-images.githubusercontent.com/41983244/87917857-8e610800-cab0-11ea-9828-a61215fcd814.png)
+
 ## 지원 디바이스
 
 
@@ -38,15 +48,9 @@ iOS / Android / Web 지원.
   
   
 <br>
-
-<div style="width:800; margin:0 auto;">
-<div style="float: left; width: 400">
-<img width="300" src="https://user-images.githubusercontent.com/41983244/87882849-0510ed80-ca3e-11ea-8305-a61dc4577e94.png">
- </div>
- <div width ="100"/>
-<div style="float: left; width: 400">
-<img width="300" src="https://user-images.githubusercontent.com/41983244/87882935-ba43a580-ca3e-11ea-888c-4ecf65724655.png"> </div>
-</div>
+<p align="center">
+<img width="300" src="https://user-images.githubusercontent.com/41983244/87882849-0510ed80-ca3e-11ea-8305-a61dc4577e94.png"><img width="300" src="https://user-images.githubusercontent.com/41983244/87882935-ba43a580-ca3e-11ea-888c-4ecf65724655.png">
+</p>
   
 
 <br>
