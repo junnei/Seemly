@@ -76,6 +76,11 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
       'lastTest': Timestamp.now(),
       'profile': downloadURL,
     });
+
+    await Firestore.instance
+        .collection('profile')
+        .document('EdNrtuckzg2WuXiuQi3b')
+        .updateData({'tag2': '흥흥'});
   }
 
   @override
