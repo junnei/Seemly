@@ -66,8 +66,10 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
     if (newUser != null) {
       await _uploadImageToServer(newUser.email, _image);
     }
-
-    await Firestore.instance.collection('profile').add({
+    print(email);
+    print(downloadURL);
+    print(_image.path);
+    await Firestore.instance.collection('profile').document().setData({
       'email': email,
       'name': name,
       'phone': phone,
