@@ -36,11 +36,16 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
           await fb.storage().ref().child('profile/$uid');
       fb.UploadTaskSnapshot uploadTask =
           await firebaseStorageRef.put(image).future;
+      Uri url = await firebaseStorageRef.getDownloadURL();
 
-      downloadURL = await firebaseStorageRef.getDownloadURL().toString();
+      setState(() {
+        downloadURL = url.toString();
+      });
     } catch (e) {
-      downloadURL =
-          'https://firebasestorage.googleapis.com/v0/b/fir-91cdf.appspot.com/o/profile%2FGroup%20181.png?alt=media&token=cd21a44e-d09e-42cd-a3ed-206634b10691';
+      setState(() {
+        downloadURL =
+            'https://firebasestorage.googleapis.com/v0/b/fir-91cdf.appspot.com/o/profile%2FGroup%20181.png?alt=media&token=cd21a44e-d09e-42cd-a3ed-206634b10691';
+      });
     }
   }
 
@@ -61,19 +66,18 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
       password: password,
     ))
         .user;
-    await Firestore.instance
-        .collection('books')
-        .document()
-        .setData({'title': 'title', 'author': 'author'});
+
     if (newUser != null) {
       if (_image == null) {
-        _image = File(
-            'https://firebasestorage.googleapis.com/v0/b/fir-91cdf.appspot.com/o/profile%2FGroup%20181.png?alt=media&token=cd21a44e-d09e-42cd-a3ed-206634b10691');
-        await Firestore.instance
-            .collection('books')
-            .document()
-            .setData({'title': 'title', 'author': 'dd'});
-        await Firestore.instance.collection('profile').add({
+        setState(() {
+          _image = File(
+              'https://firebasestorage.googleapis.com/v0/b/fir-91cdf.appspot.com/o/profile%2FGroup%20181.png?alt=media&token=cd21a44e-d09e-42cd-a3ed-206634b10691');
+        });
+      }
+      await _uploadImageToServer(newUser.email, _image);
+
+      /*
+        await _firebase.collection('profile').add({
           'email': email,
           'name': name,
           'phone': phone,
@@ -82,18 +86,22 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
         });
       } else {
         await _uploadImageToServer(newUser.email, _image);
-        await Firestore.instance
-            .collection('books')
-            .document()
-            .setData({'title': 'title', 'author': 'aa'});
-        await Firestore.instance.collection('profile').add({
+        await _firebase.collection('profile').add({
           'email': email,
           'name': name,
           'phone': phone,
           'lastTest': Timestamp.now(),
           'profile': downloadURL,
         });
-      }
+      }*/
+
+      await _firebase.collection('profile').add({
+        'email': email,
+        'name': name,
+        'phone': phone,
+        'lastTest': Timestamp.now(),
+        'profile': downloadURL,
+      });
     }
   }
 
