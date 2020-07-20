@@ -29466,7 +29466,7 @@ P.Kr.prototype={}
 P.Ks.prototype={}
 F.CR.prototype={
 D:function(a){var t=X.a8R(null,C.hD)
-return S.abW(null,"welcome_screen",P.aa(["login_screen",new F.Uc(),"chat_screen",new F.Ud(),"registration_screen",new F.Ue(),"welcome_screen",new F.Uf(),"profile_screen",new F.Ug(),"index_screen",new F.Uh()],u.X,u.gd),t,"Flutter Demo")}}
+return S.abW(null,"welcome_screen",P.aa(["login_screen",new F.Uc(),"chat_screen",new F.Ud(),"registration_screen",new F.Ue(),"welcome_screen",new F.Uf(),"profile_screen",new F.Ug(),"index_screen",new F.Uh()],u.X,u.gd),t,"Seemly_심:리")}}
 F.Uc.prototype={
 $1:function(a){return new K.lw(null)},
 $S:190}
