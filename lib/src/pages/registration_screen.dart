@@ -25,7 +25,6 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
   String name;
   String phone;
   String downloadURL;
-
   File _image;
   final picker = ImagePicker();
 
@@ -35,7 +34,6 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
           await FirebaseStorage.instance.ref().child('profile/$uid');
       StorageUploadTask uploadTask = await firebaseStorageRef.putFile(image);
       await uploadTask.onComplete;
-
       downloadURL = await firebaseStorageRef.getDownloadURL();
     } catch (e) {
       downloadURL =
@@ -55,6 +53,10 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
   }
 
   void _register() async {
+    if (_image == null) {
+      _image = File(
+          'https://firebasestorage.googleapis.com/v0/b/fir-91cdf.appspot.com/o/profile%2FGroup%20181.png?alt=media&token=cd21a44e-d09e-42cd-a3ed-206634b10691');
+    }
     final FirebaseUser newUser = (await _auth.createUserWithEmailAndPassword(
       email: email,
       password: password,
@@ -218,9 +220,6 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                       });
                       try {
                         _register();
-                        setState(() {
-                          showSpinner = false;
-                        });
                         await Navigator.pushNamed(context, WelcomeScreen.id);
                       } catch (e) {
                         setState(() {
