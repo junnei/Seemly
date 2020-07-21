@@ -87,6 +87,14 @@ flutter upgrade
 
 flutter run -d chrome
 
+## 오류시 버그 픽스 레포지토리
+
+Ainize 스냅샷? 캐시? 이슈로 배포가 원활하지 않을때가 있어 전용 레포지토리를 만들었다.
+
+<br>
+[레포지토리 바로가기](https://github.com/junnei/ainize_seemly.git)
+<br>
+오류시 해당 레포지토리 클론 후 실행!
 
 ## 피칭 자료 PDF 같이보기
 
