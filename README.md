@@ -9,7 +9,7 @@
 
 <br>
 
-[레포지토리 바로가기]((https://ainize.web.app/redirect?git_repo=github.com/junnei/seemly_ainize.git)
+[레포지토리 바로가기](https://ainize.web.app/redirect?git_repo=github.com/junnei/seemly_ainize.git)
 
 ## Introduction for our product
 
