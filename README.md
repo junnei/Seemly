@@ -5,11 +5,15 @@
 
 <br>
 
-[![Run on Ainize](https://www.ainize.ai/static/images/run_on_ainize_button.svg)](https://seemlinize-junnei.endpoint.ainize.ai)
+[![Run on Ainize](https://www.ainize.ai/static/images/run_on_ainize_button.svg)](https://seemly-junnei.endpoint.ainize.ai)
 
 <br>
 
-[레포지토리 바로가기](https://ainize.web.app/redirect?git_repo=github.com/junnei/seemly_ainize.git)
+<br>
+Flutter Web 이 공식적으로 Firebase Storage를 지원하지않아 ainize의 경우 회원가입시에 문제가 있을 수 있음.
+<br>프로젝트를 클론해서 배포하면 모두 잘 실행됌!
+
+[레포지토리 바로가기](https://ainize.web.app/redirect?git_repo=github.com/junnei/ainize_seemly.git)
 
 ## Introduction for our product
 
@@ -58,6 +62,31 @@ iOS / Android / Web 지원.
 <img width="1312" alt="스크린샷 2020-07-20 오전 3 59 02" src="https://user-images.githubusercontent.com/41983244/87882843-fd514900-ca3d-11ea-8615-3daa51a802b4.png">
 
 <br>
+## 모바일
+
+flutter channel stable
+
+<br>
+
+flutter upgrade
+
+<br>
+
+flutter run
+
+<br>
+## 웹
+
+flutter channel beta
+
+<br>
+
+flutter upgrade
+
+<br>
+
+flutter run -d chrome
+
 
 ## 피칭 자료 PDF 같이보기
 
