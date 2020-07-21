@@ -5,11 +5,11 @@
 
 <br>
 
-[![Run on Ainize](https://www.ainize.ai/static/images/run_on_ainize_button.svg)](https://ainize.web.app/redirect?git_repo=github.com/junnei/Seemly.git)
+[![Run on Ainize](https://www.ainize.ai/static/images/run_on_ainize_button.svg)](https://seemlinize-junnei.endpoint.ainize.ai)
 
 <br>
 
-[링크 바로가기](https://seemly-junnei.endpoint.ainize.ai/)
+[레포지토리 바로가기]((https://ainize.web.app/redirect?git_repo=github.com/junnei/seemly_ainize.git)
 
 ## Introduction for our product
 
