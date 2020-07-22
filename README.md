@@ -7,7 +7,7 @@
 
 [![Run on Ainize](https://www.ainize.ai/static/images/run_on_ainize_button.svg)](https://seemly-junnei.endpoint.ainize.ai)
 
-[실행 안될시 여기!!](https://fir-91cdf.web.app/#welcome_screen)
+[회원가입 안될시 여기!!](https://fir-91cdf.web.app/#welcome_screen)
 
 <br>
 
